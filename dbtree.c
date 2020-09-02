@@ -137,7 +137,7 @@ BOOK* readBookFromFile(FILE* inputFile) {
         if(L'0' <= wch && wch <= L'9') {
             rating = rating * 10 + (float)((char)wch) - 48;
             wch = fgetwc(inputFile);
-        }else if(wch == L'.'){
+        }else if(wch == L',' || wch == L'.'){
             wch = fgetwc(inputFile);
             float pow = (float)0.1;
             while(wch != '\"') {//читаем дробную часть
@@ -179,10 +179,14 @@ BOOK* readBook() {
     name = readName();
     authors = readAuthors(&authCount);
     genre = readGenre();
+    if(!whatGenre(genre)) return NULL;
     publishing = readPublishing();
     price = readPrice();
+    if(price < 0) return NULL;
     year = readYear();
+    if(year < 0) return NULL;
     rating = readRating();
+    if(rating < 0) return NULL;
     description = readShortDescription();
 
     return newBook(authCount, year, price, rating, name, authors, genre, publishing, description);
@@ -324,9 +328,9 @@ struct treeNode* removeMin(struct treeNode* p) {
 
 struct treeNode* insertN(struct treeNode* p, BOOK* newBook) {
     if( !p ) return newRecord(newBook);
-    if(wcscmp(newBook->name, p->book->name) < 0) {
+    if(wcscmp(newBook->name, p->book->name) > 0) {
         p->left = insertN(p->left, newBook);
-    }else if(wcscmp(newBook->name, p->book->name) > 0) {
+    }else if(wcscmp(newBook->name, p->book->name) < 0) {
         p->right = insertN(p->right, newBook);
     }else {
         struct treeNode* tmp = p;
@@ -409,9 +413,9 @@ struct treeNode* insertR(struct treeNode* p, BOOK* newBook) {
 
 struct treeNode* removeFromTree(struct treeNode* p, BOOK* newBook) {
     if( !p ) return NULL;
-    if(wcscmp(newBook->name, p->book->name) < 0)
+    if(wcscmp(newBook->name, p->book->name) > 0)
         p->left = removeFromTree(p->left, newBook);
-    else if(wcscmp(newBook->name, p->book->name) > 0)
+    else if(wcscmp(newBook->name, p->book->name) < 0)
         p->right = removeFromTree(p->right, newBook);
     else {
         if(p->nextBook) {
@@ -440,9 +444,9 @@ struct treeNode* removeFromTree(struct treeNode* p, BOOK* newBook) {
 
 struct treeNode* searchByName(struct treeNode* root, wchar_t* name) {
     if(!root) return NULL;
-    if(wcscmp(root->book->name, name) < 0) {
+    if(wcscmp(root->book->name, name) > 0) {
         return searchByName(root->left, name);
-    }else if(wcscmp(root->book->name, name) > 0) {
+    }else if(wcscmp(root->book->name, name) < 0) {
         return searchByName(root->right, name);
     }else {
         return root;
@@ -504,6 +508,7 @@ struct treeNode* searchByRating(struct treeNode* root, float rating) {
 }
 
 void printTree(struct treeNode* root) {
+    if(!root) return;
     if(root->right != NULL)printTree(root->right);
     if(root != NULL) {
         printBook(root->book);

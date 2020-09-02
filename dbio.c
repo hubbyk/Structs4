@@ -132,6 +132,7 @@ int readYear() {
             year = year * 10 + (char)ch - 48;
         }else {
             wprintf(L"ERROR: incorrect input\n");
+            while((ch = getwchar()) != L'\n');
             return -1;
         }
     }
@@ -150,6 +151,7 @@ int readPrice() {
             price = price * 10 + (char)ch - 48;
         }else {
             wprintf(L"ERROR: incorrect input\n");
+            while((ch = getwchar()) != L'\n');
             return -1;
         }
     }
@@ -173,15 +175,28 @@ float readRating() {
                     pow /= 10;
                 }else {
                     wprintf(L"ERROR: incorrect input\n");
+                    while((ch = getwchar()) != L'\n');
                     return -1;
                 }
             }
             break;
         }else {
             wprintf(L"ERROR: incorrect input\n");
+            while((ch = getwchar()) != L'\n');
             return -1;
         }
     }
 
     return rating;
+}
+
+int isLetter(wchar_t ch) {
+    if(L'a' <= ch && ch <= L'z' || L'A' <= ch && ch <= L'Z' ||
+            L'а' <= ch && ch <= L'я' || L'А' <= ch && ch <= L'Я' ||
+       ch == L'ё' || ch == L'Ё') return 1;
+    return 0;
+}
+int isDigit(wchar_t ch) {
+    if(L'0' <= ch && ch <= '9') return 1;
+    return 0;
 }

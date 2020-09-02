@@ -79,18 +79,27 @@ int addRecord(struct treeNode** root) {
 
     if(book) {
         *root = insertN(*root, book);
-        return EXIT_SUCCESS;
+        return 1;
     }else {
-        return EXIT_FAILURE;
+        wprintf(L"Incorrect input\n");
+        return 0;
     }
 }
 int removeRecord(struct treeNode** root) {
     BOOK* book = readBook();
-    removeFromTree(*root, book);
-    return 1;
+    if(book) {
+        removeFromTree(*root, book);
+        return 1;
+    }
+    wprintf(L"Incorrect input\n");
+    return 0;
 }
 int editRecord(struct treeNode** root) {
     BOOK* book = readBook();
+    if (!book) {
+        wprintf(L"Incorrect input\n");
+        return 0;
+    }
     struct treeNode* result = removeFromTree(*root, book);
 
     if(result) {
@@ -212,6 +221,7 @@ void searchR(struct  treeNode* mainTree) {
 
 BOOK* updateBook(BOOK* book) {
     int userChoice = 0;
+    wchar_t ch;
 
     wprintf(L"Update name?(0 - yes, another number - no)\n");
     wscanf(L"%d", &userChoice);
@@ -220,30 +230,30 @@ BOOK* updateBook(BOOK* book) {
         book->name = readName();
     }
 
-    wprintf(L"Update genre?(0 - yes, another number - no)\n");
+    wprintf(L"\nUpdate genre?(0 - yes, another number - no)\n");
     wscanf(L"%d", &userChoice);
-    getwchar();
+    while((ch = getwchar()) != '\n');
     if(!userChoice) {
         book->genre = readGenre();
     }
 
-    wprintf(L"Update publishing?(0 - yes, another number - no)\n");
+    wprintf(L"\nUpdate publishing?(0 - yes, another number - no)\n");
     wscanf(L"%d", &userChoice);
-    getwchar();
+    while((ch = getwchar()) != '\n');
     if(!userChoice) {
         book->publishing = readPublishing();
     }
 
-    wprintf(L"Update description?(0 - yes, another number - no)\n");
+    wprintf(L"\nUpdate description?(0 - yes, another number - no)\n");
     wscanf(L"%d", &userChoice);
-    getwchar();
+    while((ch = getwchar()) != '\n');
     if(!userChoice) {
         book->description = readShortDescription();
     }
 
     wprintf(L"Update authors?(0 - yes, another number - no)\n");
     wscanf(L"%d", &userChoice);
-    getwchar();
+    while((ch = getwchar()) != '\n');
     if(!userChoice) {
         int count = 0;
         book->authors = readAuthors(&count);
@@ -252,21 +262,21 @@ BOOK* updateBook(BOOK* book) {
 
     wprintf(L"Update year?(0 - yes, another number - no)\n");
     wscanf(L"%d", &userChoice);
-    getwchar();
+    while((ch = getwchar()) != '\n');
     if(!userChoice) {
         book->year = readYear();
     }
 
     wprintf(L"Update price?(0 - yes, another number - no)\n");
     wscanf(L"%d", &userChoice);
-    getwchar();
+    while((ch = getwchar()) != '\n');
     if(!userChoice) {
         book->price = readPrice();
     }
 
     wprintf(L"Update rating?(0 - yes, another number - no)\n");
     wscanf(L"%d", &userChoice);
-    getwchar();
+    while((ch = getwchar()) != '\n');
     if(!userChoice) {
         book->rating = readRating();
     }

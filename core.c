@@ -76,7 +76,7 @@ Enter the number: ");
     if(ADD_RECORD + 1 <= userChoice && userChoice <= LOAD_FROM_FILE + 1) {
         return userChoice - 1;
     }else {
-        wprintf(L"ERROR: incorrect input\n");
+        wprintf(L"Goodbye\n");
         return 100;
     }
 }
@@ -95,20 +95,22 @@ void saveDbToFile(struct treeNode** root) {
     }
     ++len;
     buff = (char*)realloc(buff, len*sizeof(char));
+    buff[len - 1] = '.';
+    ++len;
+    buff = (char*)realloc(buff, len*sizeof(char));
+    buff[len - 1] = 't';
+    ++len;
+    buff = (char*)realloc(buff, len*sizeof(char));
+    buff[len - 1] = 'x';
+    ++len;
+    buff = (char*)realloc(buff, len*sizeof(char));
+    buff[len - 1] = 't';
+    ++len;
+    buff = (char*)realloc(buff, len*sizeof(char));
     buff[len - 1] = '\0';
 
     inputFile = fopen(buff, "wb");
 
-    fseek(inputFile,0, SEEK_END);
-    int fileSize = (int)ftell(inputFile);
-    if(fileSize) {
-        wprintf(L"WARNING: this file is always exist!\nDo you want to rewrite it?(Y - yes, anything else - no): ");
-        wscanf(L"%c\n", &wch);
-        if(wch != L'Y') {
-            fclose(inputFile);
-            return;
-        }
-    }
     saveToFile(*root, inputFile);
 
     fclose(inputFile);
@@ -128,9 +130,25 @@ void loadDbFromFile(struct treeNode** root) {
     }
     ++len;
     buff = (char*)realloc(buff, len*sizeof(char));
+    buff[len - 1] = '.';
+    ++len;
+    buff = (char*)realloc(buff, len*sizeof(char));
+    buff[len - 1] = 't';
+    ++len;
+    buff = (char*)realloc(buff, len*sizeof(char));
+    buff[len - 1] = 'x';
+    ++len;
+    buff = (char*)realloc(buff, len*sizeof(char));
+    buff[len - 1] = 't';
+    ++len;
+    buff = (char*)realloc(buff, len*sizeof(char));
     buff[len - 1] = '\0';
 
     inputFile = fopen(buff, "rb");
+    if(!inputFile) {
+        wprintf(L"No such file(((\n");
+        return;
+    }
 
     readFromFile(root, inputFile);
 
