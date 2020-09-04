@@ -177,10 +177,13 @@ BOOK* readBook() {
     wprintf(L"==========================\n");
 
     name = readName();
+    if(!name) return NULL;
     authors = readAuthors(&authCount);
+    if(!authors) return NULL;
     genre = readGenre();
     if(!whatGenre(genre)) return NULL;
     publishing = readPublishing();
+    if(!publishing) return NULL;
     price = readPrice();
     if(price < 0) return NULL;
     year = readYear();

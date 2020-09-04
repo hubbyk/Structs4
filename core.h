@@ -25,6 +25,5 @@ void saveDbToFile(struct treeNode**);
 void loadDbFromFile(struct treeNode** root);
 
 void freeTree(struct treeNode* tree);
-void freeTreeFull(struct treeNode* tree);
 
 #endif //STRUCTS4_CORE_H

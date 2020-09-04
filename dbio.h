@@ -20,7 +20,6 @@ int readPrice();
 float readRating();
 
 int isLetter(wchar_t ch);
-int isDigit(wchar_t ch);
 
 
 //wchar_t* readNameF();
