@@ -179,18 +179,50 @@ BOOK* readBook() {
     name = readName();
     if(!name) return NULL;
     authors = readAuthors(&authCount);
-    if(!authors) return NULL;
+    if(!authors) {
+        free(name);
+        return NULL;
+    }
     genre = readGenre();
-    if(!whatGenre(genre)) return NULL;
+    if(!whatGenre(genre)) {
+        free(name);
+        if(!genre) free(genre);
+        return NULL;
+    }
     publishing = readPublishing();
-    if(!publishing) return NULL;
+    if(!publishing) {
+        free(name);
+        if(!genre) free(genre);
+        return NULL;
+    }
     price = readPrice();
-    if(price < 0) return NULL;
+    if(price < 0) {
+        free(name);
+        if(!genre) free(genre);
+        free(publishing);
+        return NULL;
+    }
     year = readYear();
-    if(year < 0) return NULL;
+    if(year < 0) {
+        free(name);
+        if(!genre) free(genre);
+        free(publishing);
+        return NULL;
+    }
     rating = readRating();
-    if(rating < 0) return NULL;
+    if(rating < 0) {
+        free(name);
+        if(!genre) free(genre);
+        free(publishing);
+        return NULL;
+    }
     description = readShortDescription();
+    if(!description) {
+        free(name);
+        if(!genre) free(genre);
+        free(publishing);
+        return NULL;
+    }
 
     return newBook(authCount, year, price, rating, name, authors, genre, publishing, description);
 }

@@ -29,5 +29,6 @@ void searchA(struct treeNode*);
 void searchR(struct  treeNode*);
 
 BOOK* updateBook(BOOK*);
+void freeBook(BOOK* book);
 
 #endif //STRUCTS4_DBDATAMANAGER_H

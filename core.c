@@ -61,7 +61,7 @@ void waitRequest() {
     }
 }
 int requestTypeMenu() {
-    int userChoice;
+    wchar_t ch, next;
 
     wprintf(L"===========MENU===========\n\
 1.Add new book    2.Remove book\n\
@@ -70,14 +70,33 @@ int requestTypeMenu() {
 7.Load DB from file\n\
 Enter the number: ");
 
-    wscanf(L"%d", &userChoice);
-    getwchar();
-
-    if(ADD_RECORD + 1 <= userChoice && userChoice <= LOAD_FROM_FILE + 1) {
-        return userChoice - 1;
-    }else {
-        wprintf(L"Goodbye\n");
+    ch = getwchar();
+    next = getwchar();
+    if(next != L'\n') {
+        while((next = getwchar()) != L'\n');
         return 100;
+    }
+    if(!isNumber(ch)) return 100;
+
+    switch (ch) {
+        case L'1':
+            return ADD_RECORD;
+        case L'2':
+            return REMOVE_RECORD;
+        case L'3':
+            return EDIT_RECORD;
+        case L'4':
+            return SEARCH_BY;
+        case L'5':
+            return SORT_BY;
+        case L'6':
+            return SAVE_TO_FILE;
+        case L'7':
+            return LOAD_FROM_FILE;
+        default:
+            wprintf(L"Goodbye\n");
+            return 100;
+
     }
 }
 
@@ -156,7 +175,7 @@ void loadDbFromFile(struct treeNode** root) {
 }
 
 int chooseColumn() {
-    int userChoice;
+    wchar_t ch, next;
 
     wprintf(L"Choose column:\n\
 1.Genre    2.Price\n\
@@ -165,14 +184,33 @@ int chooseColumn() {
 6.Name     7.Authors\n\
 Enter the number: ");
 
-    wscanf(L"%d", &userChoice);
-    getwchar();
-
-    if(GENRE + 1 <= userChoice && userChoice <= SHORT_DESCRIPTION) {
-        return userChoice - 1;
-    }else {
-        wprintf(L"ERROR: incorrect input\n");
+    ch = getwchar();
+    next = getwchar();
+    if(next != L'\n') {
+        while((next = getwchar()) != L'\n');
         return 100;
+    }
+    if(!isNumber(ch)) return 100;
+
+    switch (ch) {
+        case L'1':
+            return GENRE;
+        case L'2':
+            return PRICE;
+        case L'3':
+            return YEAR;
+        case L'4':
+            return RATING;
+        case L'5':
+            return PUBLISHING;
+        case L'6':
+            return NAME;
+        case L'7':
+            return AUTHORS;
+        default:
+            wprintf(L"Goodbye\n");
+            return 100;
+
     }
 }
 
@@ -249,5 +287,12 @@ void searchBy(struct treeNode* mainTree) {
 void freeTree(struct treeNode* tree) {
     if(tree->right) freeTree(tree->right);
     if(tree->left) freeTree(tree->left);
-    if(tree != NULL) free(tree);
+    if(tree != NULL) {
+        struct treeNode* curNode = tree, *toRemove = NULL;
+        while(curNode) {
+            toRemove = curNode;
+            curNode = curNode->nextBook;
+            free(toRemove);
+        }
+    }
 }

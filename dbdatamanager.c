@@ -168,7 +168,7 @@ void searchY(struct treeNode* mainTree) {
 
     newTree = buildByYear(mainTree, &newTree);
 
-    if((result = searchByYear(mainTree, year))) {
+    if((result = searchByYear(newTree, year))) {
         while (result) {
             printBook(result->book);
             result = result->nextBook;
@@ -185,7 +185,7 @@ void searchPU(struct treeNode* mainTree) {
 
     newTree = buildByPubl(mainTree, &newTree);
 
-    if((result = searchByPublishing(mainTree, publishing))) {
+    if((result = searchByPublishing(newTree, publishing))) {
         while (result) {
             printBook(result->book);
             result = result->nextBook;
@@ -282,4 +282,14 @@ BOOK* updateBook(BOOK* book) {
     }
 
     return book;
+}
+void freeBook(BOOK* book) {
+    if(book) {
+        if(book->name) free(book->name);
+        if(book->genre) free(book->genre);
+        if(book->description) free(book->description);
+        if(book->publishing) free(book->publishing);
+        if(book->authors) free(*book->authors);
+        free(book);
+    }
 }

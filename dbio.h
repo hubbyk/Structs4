@@ -20,6 +20,8 @@ int readPrice();
 float readRating();
 
 int isLetter(wchar_t ch);
+int isWhiteSpace(wchar_t ch);
+int isNumber(wchar_t ch);
 
 
 //wchar_t* readNameF();
